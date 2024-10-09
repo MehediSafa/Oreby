@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 
 import { FaHeart,FaShoppingCart  } from "react-icons/fa";
 import { FaCodeCompare } from "react-icons/fa6";
