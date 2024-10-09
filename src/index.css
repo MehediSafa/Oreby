@@ -2,3 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+
+.slick-dots .slick-active div{
+    border-right: 3px solid #262626 !important;
+    color: #262626 !important ;
+}
+
+@media(max-width:648px){
+    .one {
+        left: -49px !important;
+        position: relative;
+        top: -10px;
+    }
+   .one li {
+        width: 30px;
+        color: transparent;
+        border-right: 3px solid white;
+        padding-bottom: -9px;
+        height: 24px;
+    }
+}
+
+
+.slick-next{
+   position: absolute;
+   top:50%;
+   right: -4%;
+   transform: translateY(-50%); 
+   border: 1px solid transparent;
+   background-color: #979797;
+   border-radius: 50%;
+   width: 40px;
+   height: 40px;
+   padding: 10px;
+   color:white
+}
+
+.slick-prev{
+    position: absolute;
+   top:50%;
+   left: -4%;
+   transform: translateY(-50%); 
+   border: 1px solid transparent;
+   background-color: #979797;
+   border-radius: 50%;
+   width: 40px;
+   height: 40px;
+   padding: 10px;
+   color:white
+}
