@@ -4,12 +4,13 @@ import { ApiData } from './ContextApi'
 import ArrivalComponent from './ArrivalComponent'
 import { Link } from 'react-router-dom'
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css"; 
-import { GrNext,GrPrevious  } from "react-icons/gr";
+import "slick-carousel/slick/slick.css";
+import { GrNext, GrPrevious } from "react-icons/gr";
 
 const NewArrivals = () => {
-  let data = useContext(ApiData )
+  let { info, loading } = useContext(ApiData)
 
+  
 
   const settings = {
     dots: false,
@@ -19,35 +20,37 @@ const NewArrivals = () => {
     nextArrow: <GrNext />,
     prevArrow: <GrPrevious />
   };
-   
 
 
-  
+
+
   return (
     <section className='py-[128px]'>
-    <Container>
-    <h2 className='font-sans font-bold text-[39px] text-[#262626]'>New Arrivals</h2>
-      <Slider {...settings}>
+      <Container>
+        <h2 className='font-sans font-bold text-[39px] text-[#262626]'>New Arrivals</h2>
+        {loading ? <h2>Loading.....</h2>
+          :
+          <Slider {...settings}>
 
-           
-            
-        {data.map((item) =>(
-             <Link to='/shop'>        
-             <ArrivalComponent item={item}/>
-             </Link>
-        ) )
-          
+
+
+            {info.map((item) => (
+              <Link to='/shop'>
+                <ArrivalComponent item={item} />
+              </Link>
+            ))
+
+            }
+
+          </Slider>
+
         }
-            
-      </Slider>
-      
-      
-      
-                 
-      
-     
-    </Container>
-</section>
+
+
+
+
+      </Container>
+    </section>
   )
 }
 

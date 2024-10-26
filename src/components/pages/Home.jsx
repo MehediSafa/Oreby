@@ -17,7 +17,7 @@ const Home = () => {
   return (
     
     <>
-    <Navbar/>
+  
     <Banner/>
     <Ads/>
   <Newarrivals/>
