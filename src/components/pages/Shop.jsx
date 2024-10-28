@@ -3,6 +3,7 @@ import Container from '../Container';
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { ApiData } from '../ContextApi';
 import Post from '../Post';
+import { Link } from 'react-router-dom';
 
 
 const Shop = () => {
@@ -15,7 +16,7 @@ const Shop = () => {
       <Container>
         <div>
           <h2 className='font-sans font-bold text-[49px] text-[#262626] pt-[138px]'>Products</h2>
-          <p className='font-sans font-normal text-[12px] text-[#767676] '>Home &gt; Products</p>
+          <p className='font-sans font-normal text-[12px] text-[#767676] '> <Link to='/'> Home </Link>  &gt; <Link to='/shop'> Products</Link></p>
 
           <div className='flex'>
             <div className='w-1/5 mt-[130px]'>
@@ -36,8 +37,8 @@ const Shop = () => {
               </div>
             </div>
 
-            <div className='w-4/5 '>
-           <div className=' flex justify-end items-center pt-[130px] pb-[10px]'>
+            <div className='lg:w-4/5  '>
+           <div className=' flex lg:flex-row flex-col lg:gap-y-0  justify-end  items-center pt-[130px] pb-[10px]'>
            <div className='flex items-center'>
             <div>
 

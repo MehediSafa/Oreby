@@ -72,8 +72,8 @@ const Header = () => {
 
                     <div className={`z-50 absolute lg:hidden top-24 left-0 w-full bg-white flex flex-col items-center  ${show ? 'block' : 'hidden'}`}>
                         <ul>
-                            <li className='pt-[10px] font-sans font-bold text-[14px] text-[#767676] hover:text-[#262626]'>Home</li>
-                            <li className='pt-[10px] font-sans font-bold text-[14px] text-[#767676] hover:text-[#262626]'>Shop</li>
+                            <li className='pt-[10px] font-sans font-bold text-[14px] text-[#767676] hover:text-[#262626]'><Link to='/'>Home</Link></li>
+                            <li className='pt-[10px] font-sans font-bold text-[14px] text-[#767676] hover:text-[#262626]'><Link to='/shop'>Shop</Link></li>
                             <li className='pt-[10px] font-sans font-bold text-[14px] text-[#767676] hover:text-[#262626]'>About</li>
                             <li className='pt-[10px] font-sans font-bold text-[14px] text-[#767676] hover:text-[#262626]'>Contacts</li>
                             <li className='pt-[10px] font-sans font-bold text-[14px] text-[#767676] hover:text-[#262626]'>Journal</li>
