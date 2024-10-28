@@ -20,7 +20,7 @@ const Post = () => {
                         <Link to={`/shop/${item.id}`}>
                                 <img className='w-full' src={item.thumbnail} alt={item.title} />
                                 </Link>
-                                <div className='absolute lg:top-[214px] top-[10gitr0px] lg:bottom-[2px] bottom-0 left-0 bg-white w-full opacity-0 group-hover:opacity-100 group-hover:h-[50%]'>
+                                <div className='absolute lg:top-[214px] top-[100px] lg:bottom-[2px] bottom-0 left-0 bg-white w-full opacity-0 group-hover:opacity-100 group-hover:h-[50%]'>
                                     <div className='flex gap-x-[20px] lg:pt-[35px] justify-end items-center h-[60px]'>
                                         <h2 className='font-sans font-normal lg:text-[16px] text-[10px] text-[#767676]'>Add to Wish List</h2>
                                         <FaHeart className='me-[20px]' />
