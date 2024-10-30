@@ -2,10 +2,8 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { PiGreaterThanLight } from "react-icons/pi";
-import product1 from '../../assets/product1.png'
-import product2 from '../../assets/product2.png'
-import product3 from '../../assets/product3.png'
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import { Rate } from "antd";
 
 import Container from '../Container'
 const ProductDetails = () => {
@@ -113,6 +111,11 @@ const ProductDetails = () => {
 
 
                 </div>
+ 
+                 {singleProduct &&
+                 <Rate disabled value = {singleProduct.rating}/>
+
+                 }
             </Container>
         </section>
 

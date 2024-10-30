@@ -1,24 +1,29 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import { FaCodeCompare } from "react-icons/fa6";
 import { ApiData } from './ContextApi';
 import { Link } from 'react-router-dom';
 
-const Post = () => {
-    const { info, loading } = useContext(ApiData);
+const Post = ({allPage}) => {
+    
+    const { info,loading } = useContext(ApiData);
+   
+
+
+    
 
     return (
         <>
             {loading ? (
                 <h2>Loading...</h2>
-            ) : ( 
-                info.map((item) => (
-                    
+            ) : (
+                allPage.map((item) => (
+
                     <div key={item.id} className='lg:w-[31%] w-[100%] mb-[20px] me-[20px]'>
                         <div className='w-[100%]'>
                             <div className='relative group'>
-                        <Link to={`/shop/${item.id}`}>
-                                <img className='w-full' src={item.thumbnail} alt={item.title} />
+                                <Link to={`/shop/${item.id}`}>
+                                    <img className='w-full' src={item.thumbnail} alt={item.title} />
                                 </Link>
                                 <div className='absolute lg:top-[214px] top-[100px] lg:bottom-[2px] bottom-0 left-0 bg-white w-full opacity-0 group-hover:opacity-100 group-hover:h-[50%]'>
                                     <div className='flex gap-x-[20px] lg:pt-[35px] justify-end items-center h-[60px]'>
@@ -35,7 +40,7 @@ const Post = () => {
                                     </div>
                                 </div>
                             </div>
-                    
+
                             <div className='flex justify-between mt-[24px]'>
                                 <h2 className='font-sans font-bold lg:text-[20px] text-[9px] text-[#262626]'>{item.title}</h2>
                                 <p className='font-sans font-normal text-[16px] text-[#767676]'>${item.price}</p>

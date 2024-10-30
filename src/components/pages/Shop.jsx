@@ -4,12 +4,44 @@ import { FaPlus, FaMinus } from "react-icons/fa";
 import { ApiData } from '../ContextApi';
 import Post from '../Post';
 import { Link } from 'react-router-dom';
+import Pagination from '../Pagination';
 
 
 const Shop = () => {
   const [show, setShow] = useState(false);
-  let info = useContext(ApiData)
+  let {info,loading} = useContext(ApiData)
+ 
+  let [currentPage, setCurrentPage] = useState(1)
+  let [perPage, setPerPage] = useState(7)
 
+  let lastPage = currentPage * perPage
+  let firstPage = lastPage - perPage
+
+  let allPage = info.slice(firstPage, lastPage)
+
+
+  let pageNumber = []
+
+
+  let paginate = (paginate) => {
+    setCurrentPage(paginate )
+  }
+
+  for(let i = 1; i < Math.ceil(info.length / perPage) ; i++){
+    pageNumber.push(i)
+  }
+
+  let next = () => {
+    if (currentPage < pageNumber.length) {
+        setCurrentPage( (state)=> state + 1 )
+    }
+  }
+
+  let prev = () => {
+    if(currentPage > 0){
+      setCurrentPage( (state) => state - 1)
+    }
+  }
   
   return (
     <section id='shop'>
@@ -38,7 +70,7 @@ const Shop = () => {
             </div>
 
             <div className='lg:w-4/5  '>
-           <div className=' flex lg:flex-row flex-col lg:gap-y-0  justify-end  items-center pt-[130px] pb-[10px]'>
+           <div className=' flex lg:flex-row flex-col lg:gap-y-0 gap-y-2  justify-end  items-center pt-[130px] pb-[10px]'>
            <div className='flex items-center'>
             <div>
 
@@ -55,7 +87,7 @@ const Shop = () => {
                   <option value="" className='font-sans font-normal text-[16px] text-[#767676]'>five</option>
                 </select>
               </div>
-              <div className='ml-6 flex items-center'>
+              <div className='ml-5 flex items-center'>
                 <div>
 
                 <label className='pe-[20px] font-sans font-normal text-[16px] text-[#767676]' htmlFor="">Show</label>
@@ -71,7 +103,12 @@ const Shop = () => {
            </div>
            <div className='flex flex-wrap ps-8'>
                 
-                <Post/>
+                <Post allPage={allPage}/>
+
+                <div className='py-[128px] flex justify-center w-full'>
+
+                <Pagination pageNumber={pageNumber} pagintate={paginate} next={next} prev={prev} />
+                </div>
            </div>
             </div>
           </div>
