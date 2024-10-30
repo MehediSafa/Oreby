@@ -5,111 +5,136 @@ import { ApiData } from '../ContextApi';
 import Post from '../Post';
 import { Link } from 'react-router-dom';
 import Pagination from '../Pagination';
-
+import { IoGrid } from "react-icons/io5";
+import { FaList } from "react-icons/fa6";
 
 const Shop = () => {
-  const [show, setShow] = useState(false);
-  let {info,loading} = useContext(ApiData)
- 
-  let [currentPage, setCurrentPage] = useState(1)
-  let [perPage, setPerPage] = useState(7)
+  let { info, loading } = useContext(ApiData);
+  let [show, setShow] = useState(false);
+  let [currentPage, setCurrentPage] = useState(1);
+  let [perPage, setPerPage] = useState(6);
+  
+  let lastPage = currentPage * perPage;
+  let firstPage = lastPage - perPage;
+  let allPage = info.slice(firstPage, lastPage);
+  let pageNumber = [];
 
-  let lastPage = currentPage * perPage
-  let firstPage = lastPage - perPage
-
-  let allPage = info.slice(firstPage, lastPage)
-
-
-  let pageNumber = []
-
+  let [activeGrid,setActiveGrid] = useState('')
+  for (let i = 0; i < Math.ceil(info.length / perPage); i++) {
+    pageNumber.push(i);
+  }
 
   let paginate = (paginate) => {
-    setCurrentPage(paginate )
-  }
-
-  for(let i = 1; i < Math.ceil(info.length / perPage) ; i++){
-    pageNumber.push(i)
-  }
+    setCurrentPage(paginate + 1);
+  };
 
   let next = () => {
     if (currentPage < pageNumber.length) {
-        setCurrentPage( (state)=> state + 1 )
+      setCurrentPage((state) => state + 1);
     }
-  }
-
+  };
   let prev = () => {
-    if(currentPage > 0){
-      setCurrentPage( (state) => state - 1)
+    if (currentPage > 1) {
+      setCurrentPage((state) => state - 1);
     }
+  };
+
+  let handleMulti = ()=> {
+    setActiveGrid("active")
   }
+
   
+;
+
   return (
-    <section id='shop'>
+    <section>
       <Container>
-        <div>
-          <h2 className='font-sans font-bold text-[49px] text-[#262626] pt-[138px]'>Products</h2>
-          <p className='font-sans font-normal text-[12px] text-[#767676] '> <Link to='/'> Home </Link>  &gt; <Link to='/shop'> Products</Link></p>
+        <div className="flex">
+          <div className="w-1/5">
+            <div className="pr-6 pt-8">
+              <div
+                className="flex justify-between items-center"
+                onClick={() => setShow(!show)}
+              >
+                <h2 className="text-[#262626] font-bold text-[20px] font-sans">
+                  Shop by Category
+                </h2>
 
-          <div className='flex'>
-            <div className='w-1/5 mt-[130px]'>
-              <div className=''>
-                <div onClick={() => setShow(!show)} className='flex justify-between items-center cursor-pointer'>
-                  <h2 className='font-sans font-bold text-[20px] text-[#262626]'>Shop by Category</h2>
-                  {show ? <FaMinus /> : <FaPlus />}
+                {show ? <FaMinus /> : <FaPlus />}
+              </div>
+              {show && (
+                <ul>
+                  <li>Categroy</li>
+                  <li>Categroy</li>
+                  <li>Categroy</li>
+                  <li>Categroy</li>
+                  <li>Categroy</li>
+                </ul>
+              )}
+            </div>
+          </div>
+          <div className="w-4/5 pt-8">
+            <div className="flex items-center justify-between">
+              <div className="">
+                <div className="flex items-center gap-x-4">
+                  <div
+                    onClick={()=> setActiveGrid('')}
+                    className="p-3 hover:bg-[gray] text-[#222]"
+                  >
+                    <IoGrid />
+                  </div>
+                  <div
+                    onClick={handleMulti}
+                    className="p-3 hover:bg-[gray] text-[#222]"
+                  >
+                    <FaList />
+                  </div>
                 </div>
-                {show && (
-                  <ul className='mt-4'>
-                    <li className='mt-[20px] font-sans font-normal text-[16px] text-[rgb(118,118,118)]'>Category 1</li>
-                    <li className='mt-[20px] font-sans font-normal text-[16px] text-[#767676]'>Category 2</li>
-                    <li className='mt-[20px] font-sans font-normal text-[16px] text-[#767676]'>Category 3</li>
-                    <li className='mt-[20px] font-sans font-normal text-[16px] text-[#767676]'>Category 4</li>
-                    <li className='mt-[20px] font-sans font-normal text-[16px] text-[#767676]'>Category 5</li>
-                  </ul>
-                )}
+              </div>
+              <div className="flex justify-end items-center gap-x-10">
+                <div className="">
+                  <label className="pr-3" htmlFor="">
+                    Sort By :
+                  </label>
+                  <select
+                    className="w-[60px] h-[30px] border-[1px] border-[#262626]"
+                    name=""
+                    id=""
+                  >
+                    <option value="">one</option>
+                    <option value="">one</option>
+                    <option value="">one</option>
+                    <option value="">one</option>
+                  </select>
+                </div>
+                <div className="">
+                  <label className="pr-3" htmlFor="">
+                    Show:
+                  </label>
+                  <select
+                    className="w-[60px] h-[30px] border-[1px] border-[#262626]"
+                    name=""
+                    id=""
+                  >
+                    <option value="">one</option>
+                    <option value="">one</option>
+                    <option value="">one</option>
+                    <option value="">one</option>
+                  </select>
+                </div>
               </div>
             </div>
-
-            <div className='lg:w-4/5  '>
-           <div className=' flex lg:flex-row flex-col lg:gap-y-0 gap-y-2  justify-end  items-center pt-[130px] pb-[10px]'>
-           <div className='flex items-center'>
-            <div>
-
-                <label className='pe-[20px] font-sans font-normal text-[16px] text-[#767676]' htmlFor="">Sort by :</label>
-                <div>
-                  
-                </div>
-            </div>
-                <select className='border-[1px] border-[#737373] text-center w-[100px] h-[30px] font-sans font-normal text-[16px] text-[#767676]'>
-                  <option value="" className='font-sans font-normal text-[16px] text-[#767676]'>one</option>
-                  <option value="" className='font-sans font-normal text-[16px] text-[#767676]'>two</option>
-                  <option value="" className='font-sans font-normal text-[16px] text-[#767676]'>three</option>
-                  <option value="" className='font-sans font-normal text-[16px] text-[#767676]'>four</option>
-                  <option value="" className='font-sans font-normal text-[16px] text-[#767676]'>five</option>
-                </select>
+            <div className="flex justify-between flex-wrap">
+              <Post allPage={allPage} activeGrid={activeGrid} />
+              <div className="py-10 flex justify-center w-full">
+                <Pagination
+                  pageNumber={pageNumber}
+                  paginate={paginate}
+                  next={next}
+                  prev={prev}
+                  currentPage={currentPage}
+                />
               </div>
-              <div className='ml-5 flex items-center'>
-                <div>
-
-                <label className='pe-[20px] font-sans font-normal text-[16px] text-[#767676]' htmlFor="">Show</label>
-                </div>
-                <select className='border-[1px] border-[#737373] text-center w-[100px] h-[30px] font-sans font-normal text-[16px] text-[#767676]'>
-                  <option value="" className='font-sans font-normal text-[16px] text-[#767676]'>one</option>
-                  <option value="" className='font-sans font-normal text-[16px] text-[#767676]'>two</option>
-                  <option value="" className='font-sans font-normal text-[16px] text-[#767676]'>three</option>
-                  <option value="" className='font-sans font-normal text-[16px] text-[#767676]'>four</option>
-                  <option value="" className='font-sans font-normal text-[16px] text-[#767676]'>five</option>
-                </select>
-              </div>
-           </div>
-           <div className='flex flex-wrap ps-8'>
-                
-                <Post allPage={allPage}/>
-
-                <div className='py-[128px] flex justify-center w-full'>
-
-                <Pagination pageNumber={pageNumber} pagintate={paginate} next={next} prev={prev} />
-                </div>
-           </div>
             </div>
           </div>
         </div>
@@ -117,5 +142,6 @@ const Shop = () => {
     </section>
   );
 };
+
 
 export default Shop;
