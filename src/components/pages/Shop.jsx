@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Container from '../Container';
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { ApiData } from '../ContextApi';
@@ -18,8 +18,10 @@ const Shop = () => {
   let firstPage = lastPage - perPage;
   let allPage = info.slice(firstPage, lastPage);
   let pageNumber = [];
+  let [categoryFilter,setCategoryFilter] = useState([]);
 
-  let [activeGrid,setActiveGrid] = useState('')
+  let [activeGrid, setActiveGrid] = useState('');
+  let [category, setCategory] = useState([])
   for (let i = 0; i < Math.ceil(info.length / perPage); i++) {
     pageNumber.push(i);
   }
@@ -33,18 +35,32 @@ const Shop = () => {
       setCurrentPage((state) => state + 1);
     }
   };
+
   let prev = () => {
     if (currentPage > 1) {
       setCurrentPage((state) => state - 1);
     }
   };
 
-  let handleMulti = ()=> {
-    setActiveGrid("active")
+  let handleMulti = () => {
+    setActiveGrid(activeGrid === 'active' ? '' : 'active');
+  }
+  
+  let handleCategory = (cItem) => {
+      let filterItem = info.filter((item)=>item.category == cItem)
+      setCategoryFilter(filterItem) 
   }
 
+ 
   
-;
+
+
+  useEffect(()=>{
+    setCategory([...new Set(info.map((item)=>item.category )) ])
+  },[info])
+
+ 
+  
 
   return (
     <section>
@@ -63,12 +79,13 @@ const Shop = () => {
                 {show ? <FaMinus /> : <FaPlus />}
               </div>
               {show && (
-                <ul>
-                  <li>Categroy</li>
-                  <li>Categroy</li>
-                  <li>Categroy</li>
-                  <li>Categroy</li>
-                  <li>Categroy</li>
+                <ul className='pt-4'>
+                  { category.map((item)=>(
+                     <li onClick={()=>handleCategory(item)} className='capitalize  font-bold font-sans text-[#262626] text-[16px]'>{item}</li>
+                  ))
+
+                 
+                  }
                 </ul>
               )}
             </div>
@@ -78,14 +95,14 @@ const Shop = () => {
               <div className="">
                 <div className="flex items-center gap-x-4">
                   <div
-                    onClick={()=> setActiveGrid('')}
-                    className="p-3 hover:bg-[gray] text-[#222]"
+                    onClick={() => setActiveGrid('')}
+                    className={`p-3 ${activeGrid === '' ? 'bg-[gray] text-[#222]' : 'bg-white text-[#222]'}`}
                   >
                     <IoGrid />
                   </div>
                   <div
                     onClick={handleMulti}
-                    className="p-3 hover:bg-[gray] text-[#222]"
+                    className={`p-3 ${activeGrid === 'active' ? 'bg-[gray] text-[#222]' : 'bg-white text-[#222]'}`}
                   >
                     <FaList />
                   </div>
@@ -125,7 +142,7 @@ const Shop = () => {
               </div>
             </div>
             <div className="flex justify-between flex-wrap">
-              <Post allPage={allPage} activeGrid={activeGrid} />
+              <Post allPage={allPage} activeGrid={activeGrid} categoryFilter ={categoryFilter}/>
               <div className="py-10 flex justify-center w-full">
                 <Pagination
                   pageNumber={pageNumber}
@@ -133,6 +150,7 @@ const Shop = () => {
                   next={next}
                   prev={prev}
                   currentPage={currentPage}
+                  
                 />
               </div>
             </div>
@@ -142,6 +160,5 @@ const Shop = () => {
     </section>
   );
 };
-
 
 export default Shop;
