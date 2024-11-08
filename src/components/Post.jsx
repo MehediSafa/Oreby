@@ -18,7 +18,7 @@ const Post = ({ allPage, activeGrid, categoryFilter, brandFilter }) => {
         <div className={`${
             activeGrid === "active"
                 ? 'w-[31%] flex flex-col justify-center'  
-                : 'flex flex-wrap'                       
+                : 'flex flex-wrap w-[100%]'                       
         }`}>
             {itemsToDisplay.map((item) => (
                 <div 
@@ -26,7 +26,7 @@ const Post = ({ allPage, activeGrid, categoryFilter, brandFilter }) => {
                     className={`${
                         activeGrid === "active"
                             ? "w-full mb-4 flex items-start"        
-                            : "lg:w-[31%] w-full mb-4 me-4"        
+                            : "lg:w-[31%] w-full mb-4 me-4 pt-5"        
                     }`}
                 >
                     <div className="w-full">

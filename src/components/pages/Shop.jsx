@@ -54,10 +54,12 @@ const Shop = () => {
   let handleCategory = (cItem) => {
       let filterItem = info.filter((item)=>item.category == cItem)
       setCategoryFilter(filterItem) 
+      setBrandFilter([])
   }
 let handleBrands = (cBrands) => {
     let filterItem = info.filter((item)=>item.brand == cBrands)
     setBrandFilter(filterItem)
+    setCategoryFilter([])
   
     
 }
