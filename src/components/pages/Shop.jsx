@@ -18,10 +18,15 @@ const Shop = () => {
   let firstPage = lastPage - perPage;
   let allPage = info.slice(firstPage, lastPage);
   let pageNumber = [];
-  let [categoryFilter,setCategoryFilter] = useState([]);
-
+  
   let [activeGrid, setActiveGrid] = useState('');
   let [category, setCategory] = useState([])
+  let [categoryFilter,setCategoryFilter] = useState([]);
+
+  let [showBrands, setShowBrands] = useState(false)
+  let [brand, setBrand] = useState([])
+  let [brandFilter, setBrandFilter] = useState([])
+
   for (let i = 0; i < Math.ceil(info.length / perPage); i++) {
     pageNumber.push(i);
   }
@@ -50,13 +55,20 @@ const Shop = () => {
       let filterItem = info.filter((item)=>item.category == cItem)
       setCategoryFilter(filterItem) 
   }
-
+let handleBrands = (cBrands) => {
+    let filterItem = info.filter((item)=>item.brand == cBrands)
+    setBrandFilter(filterItem)
+  
+    
+}
  
   
 
 
   useEffect(()=>{
     setCategory([...new Set(info.map((item)=>item.category )) ])
+
+    setBrand([...new Set(info.map((item)=>item.brand))])
   },[info])
 
  
@@ -67,6 +79,8 @@ const Shop = () => {
       <Container>
         <div className="flex">
           <div className="w-1/5">
+
+          {/* categorty part  */}
             <div className="pr-6 pt-8">
               <div
                 className="flex justify-between items-center"
@@ -82,12 +96,33 @@ const Shop = () => {
                 <ul className='pt-4'>
                   { category.map((item)=>(
                      <li onClick={()=>handleCategory(item)} className='capitalize  font-bold font-sans text-[#262626] text-[16px]'>{item}</li>
-                  ))
-
-                 
+                  ))     
                   }
                 </ul>
               )}
+            </div>
+
+              {/* brand part */}
+            <div className="pr-6 pt-8">   
+              <div className='flex justify-between items-center
+              ' onClick={() => setShowBrands(!showBrands)}>
+              
+                <h2 className="text-[#262626] font-bold text-[20px] font-sans">
+                  Shop by Brands
+              </h2>
+              {showBrands ? <FaMinus /> : <FaPlus />}
+              </div>
+              {
+                showBrands && (
+                  <ul className='pt-4'>
+                     { brand.map((item)=>(
+                     <li onClick={()=>handleBrands(item)} className='capitalize  font-bold font-sans text-[#262626] text-[16px]'>{item}</li>
+                    ))
+                  }
+                  </ul>
+                )
+              }
+
             </div>
           </div>
           <div className="w-4/5 pt-8">
@@ -142,7 +177,7 @@ const Shop = () => {
               </div>
             </div>
             <div className="flex justify-between flex-wrap">
-              <Post allPage={allPage} activeGrid={activeGrid} categoryFilter ={categoryFilter}/>
+              <Post allPage={allPage} activeGrid={activeGrid} categoryFilter ={categoryFilter} brandFilter={brandFilter}/>
               <div className="py-10 flex justify-center w-full">
                 <Pagination
                   pageNumber={pageNumber}

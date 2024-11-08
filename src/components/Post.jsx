@@ -4,11 +4,15 @@ import { FaCodeCompare } from "react-icons/fa6";
 import { ApiData } from './ContextApi';
 import { Link } from 'react-router-dom';
 
-const Post = ({ allPage, activeGrid, categoryFilter }) => {
+const Post = ({ allPage, activeGrid, categoryFilter, brandFilter }) => {
     const { info, loading } = useContext(ApiData);
 
     
-    const itemsToDisplay = categoryFilter.length > 0 ? categoryFilter : allPage;
+    const itemsToDisplay = brandFilter.length > 0
+        ? brandFilter
+        : categoryFilter.length > 0
+            ? categoryFilter
+            : allPage;
 
     return (
         <div className={`${
@@ -50,12 +54,12 @@ const Post = ({ allPage, activeGrid, categoryFilter }) => {
                             <h2 className="font-bold text-lg text-gray-900">{item.title}</h2>
                             <p className="text-lg text-gray-500">${item.price}</p>
                         </div>
-                        <p className="text-md text-gray-500">{item.brands}</p>
+                        <p className="text-md text-gray-500">{item.brand}</p>
                     </div>
                 </div>
             ))}
         </div>
     );
-}
+};
 
 export default Post;

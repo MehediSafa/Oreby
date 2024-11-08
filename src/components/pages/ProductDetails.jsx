@@ -111,11 +111,11 @@ const ProductDetails = () => {
 
 
                 </div>
- 
                  {singleProduct &&
                  <Rate disabled value = {singleProduct.rating}/>
 
                  }
+ 
             </Container>
         </section>
 
