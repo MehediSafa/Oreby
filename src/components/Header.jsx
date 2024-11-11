@@ -44,8 +44,8 @@ const Header = () => {
                             <Link to='/' className='font-sans font-bold text-[14px] text-[#767676] hover:text-[#262626]'>Home</Link>
                             
                            <Link to='/shop' className='font-sans font-bold text-[14px] text-[#767676] hover:text-[#262626]'> Shop</Link>
-                            <li className='font-sans font-bold text-[14px] text-[#767676] hover:text-[#262626]'>About</li>
-                            <li className='font-sans font-bold text-[14px] text-[#767676] hover:text-[#262626]'>Contacts</li>
+                            <Link to='/about' className='font-sans font-bold text-[14px] text-[#767676] hover:text-[#262626]'>About</Link>
+                            <Link to='/contact' className='font-sans font-bold text-[14px] text-[#767676] hover:text-[#262626]'>Contact</Link>
                             <li className='font-sans font-bold text-[14px] text-[#767676] hover:text-[#262626]'>Journal</li>
                         </ul>
                     </div>

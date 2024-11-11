@@ -9,6 +9,9 @@ import Home from "./components/pages/Home"
 import Layout from "./components/Layout"
 import Shop from "./components/pages/Shop"
 import ProductDetails from "./components/pages/ProductDetails"
+import About from "./components/pages/About"
+import Contact from "./components/pages/Contact"
+import Error from "./components/pages/Error"
  
 
 function App() {
@@ -17,6 +20,10 @@ function App() {
     <Route index element = {<Home/>}></Route>
     <Route path="/shop" element = {<Shop/>}></Route>
     <Route path="/shop/:id" element = {<ProductDetails/>}></Route>
+    <Route path="/about" element = {<About/>}></Route>
+    <Route path="/contact" element = {<Contact/>}></Route>
+    <Route path="/contact" element = {<Contact/>}></Route>
+    <Route path="*" element = {<Error/>}></Route>
      
   </Route>
  ))
