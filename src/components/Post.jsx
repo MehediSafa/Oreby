@@ -4,7 +4,7 @@ import { FaCodeCompare } from "react-icons/fa6";
 import { ApiData } from './ContextApi';
 import { Link } from 'react-router-dom';
 
-const Post = ({ allPage, activeGrid, categoryFilter, brandFilter }) => {
+const Post = ({ allPage, activeGrid, categoryFilter, brandFilter, priceShow }) => {
     const { info, loading } = useContext(ApiData);
     let [filterShow, setFilterShow] = useState([]);
     let [count, setCount] = useState(true);
@@ -26,11 +26,14 @@ const Post = ({ allPage, activeGrid, categoryFilter, brandFilter }) => {
     }, [categoryFilter]);
 
    
-    const itemsToDisplay = Array.isArray(brandFilter) && brandFilter.length > 0 
-        ? brandFilter 
-        : (Array.isArray(categoryFilter) && categoryFilter.length > 0 
-            ? filterShow 
-            : (Array.isArray(allPage) ? allPage : []));
+    
+    const itemsToDisplay = brandFilter.length > 0
+        ? brandFilter
+        : categoryFilter.length > 0
+        ? filterShow
+        : priceShow.length > 0
+        ? priceShow
+        : allPage;
 
     return (
         <>
@@ -95,5 +98,6 @@ const Post = ({ allPage, activeGrid, categoryFilter, brandFilter }) => {
         </>
     );
 };
+
 
 export default Post;

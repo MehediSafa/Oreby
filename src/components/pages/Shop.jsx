@@ -27,6 +27,10 @@ const Shop = () => {
   let [brand, setBrand] = useState([]);
   let [brandFilter, setBrandFilter] = useState([]);
 
+  let [showPrice, setShowPrice] = useState(false)
+  let [low,setLow] = useState("")
+  let [high,setHigh] = useState("")
+  let [priceShow, setPriceSHow] = useState([])
   
   const itemsToPaginate = categoryFilter.length > 0 ? categoryFilter : brandFilter.length > 0 ? brandFilter : info;
   for (let i = 0; i < Math.ceil(info.length / perPage); i++) {
@@ -66,7 +70,22 @@ const Shop = () => {
     setCategoryFilter([]); 
     setCurrentPage(1); 
   };
-
+  
+  let handlePrice = (value) => {
+    setLow(value.low);
+    setHigh(value.high);
+    
+   
+    let priceRange = info.filter((item) => 
+      item.price > value.low && item.price <value.high
+      
+      );
+      
+     setPriceSHow(priceRange)
+     setCurrentPage(1);
+      
+  };
+  
   let handleChange = (e) => {
     setPerPage(e.target.value);
     
@@ -74,7 +93,8 @@ const Shop = () => {
   let handleAll = () => {
     setCategoryFilter([]);  
     setBrandFilter([]);     
-    setCurrentPage(1);      
+    setCurrentPage(1);  
+        
   };
 
   useEffect(() => {
@@ -145,6 +165,27 @@ const Shop = () => {
                 </ul>
               )}
             </div>
+            {/* price section */}
+            <div className="pr-6 pt-8">
+              <div className="flex justify-between items-center" 
+              onClick={()=> setShowPrice(!showPrice)}>
+              <h2 className="text-[#262626] font-bold text-[20px] font-sans">Shop By Price</h2>
+              {showPrice ? <FaMinus /> : <FaPlus />}
+              </div>
+              {showPrice && 
+
+                <ul>
+                  <li onClick={()=>handlePrice({low:0 , high:10})} 
+                  className="capitalize font-bold font-sans text-[#262626] text-[16px]">$00 - $10</li>
+                  <li onClick={()=>handlePrice({low:10 , high:20})} 
+                  className="capitalize font-bold font-sans text-[#262626] text-[16px]">$10 - $20</li>
+                  <li onClick={()=>handlePrice({low:20 , high:30})}  
+                  className="capitalize font-bold font-sans text-[#262626] text-[16px]">$20 - $30</li>
+                  <li onClick={()=>handlePrice({low:30 , high:100})}  
+                  className="capitalize font-bold font-sans text-[#262626] text-[16px]">$30 - $100</li>
+                </ul>
+              }
+            </div>
           </div>
 
           <div className="w-4/5 pt-8">
@@ -196,6 +237,7 @@ const Shop = () => {
                 activeGrid={activeGrid}
                 categoryFilter={categoryFilter}
                 brandFilter={brandFilter}
+                priceShow={priceShow}
               />
               <div className="py-10 flex justify-center w-full">
                 {pageNumber.length > 1 && categoryFilter.length === 0 && brandFilter.length === 0 && (
