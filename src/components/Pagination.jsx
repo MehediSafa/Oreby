@@ -5,7 +5,6 @@ const Pagination = ({ pageNumber, paginate, next, prev, currentPage }) => {
       <nav aria-label="Page navigation example">
         <ul class="inline-flex -space-x-px text-sm">
           {pageNumber.length > 0 && (
-
           <li onClick={prev}>
             <a class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg ">
               Previous
