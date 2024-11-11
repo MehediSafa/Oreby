@@ -27,7 +27,7 @@ const Shop = () => {
   let [brand, setBrand] = useState([])
   let [brandFilter, setBrandFilter] = useState([])
 
-  for (let i = 0; i < Math.ceil(info.length / perPage); i++) {
+  for (let i = 0; i < Math.ceil(categoryFilter.length > 0 ?categoryFilter : info.length / perPage); i++) {
     pageNumber.push(i);
   }
 
@@ -179,15 +179,17 @@ let handleBrands = (cBrands) => {
               </div>
             </div>
             <div className="flex justify-between flex-wrap">
-              <Post allPage={allPage} activeGrid={activeGrid} categoryFilter ={categoryFilter} brandFilter={brandFilter}/>
+              <Post allPage={allPage} 
+                  activeGrid={activeGrid} 
+                  categoryFilter ={categoryFilter} 
+                  brandFilter={brandFilter}/>
               <div className="py-10 flex justify-center w-full">
                 <Pagination
                   pageNumber={pageNumber}
                   paginate={paginate}
                   next={next}
                   prev={prev}
-                  currentPage={currentPage}
-                  
+                  currentPage={currentPage}                  
                 />
               </div>
             </div>
