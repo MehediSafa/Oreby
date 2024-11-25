@@ -9,6 +9,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Container from '../Container'
+import {useDispatch} from 'react-redux'
+import { addToCart } from '../../slice/productSlice';
 const ProductDetails = () => {
     let productId = useParams()
     let [singleProduct, setSingleProduct] = useState({})
@@ -16,6 +18,10 @@ const ProductDetails = () => {
 
     let [show, setShow] = useState(false)
     let [show1, setShow1] = useState(false)
+    
+
+    let dispatch = useDispatch()
+
 
 
 
@@ -27,13 +33,13 @@ const ProductDetails = () => {
 
     }
 
-    let handleCart = () => {
-        toast("Welcome To Cart Page");
+    let handleCart = (item) => {
+        dispatch(addToCart({...item, qun: 1}))
+        toast("WelCome to Cart Page");
         setTimeout(()=>{
-            navigate("/cart")
+          navigate("/cart")
         },2000)
-
-    }
+      };
     useEffect(() => {
         getSingleProduct();
     }, []);
@@ -95,7 +101,7 @@ const ProductDetails = () => {
                             <button className='pe-5' ><span className='px-[30px] py-[16px] border-[1px] border-[#2B2B2B] text-[#262626]hover:text-white hover:bg-[#262626] hover:text-white
                                                 '>Add to Wishlist</span></button>
                             <button className='' ><span className='px-[30px] py-[16px] border-[1px] border-[#2B2B2B] text-[#262626]hover:text-white hover:bg-[#262626] hover:text-white'
-                                onClick={handleCart}
+                                onClick={()=>handleCart(singleProduct)}
                             >Add to Cart</span></button>
                         </div>
                     </div>
