@@ -12,6 +12,7 @@ const Navbar = () => {
     const isCartOpenRef = useState(false)
     const [isLogin, setIsLogin] = useState(false)
     const isLoginref = useRef(false)
+    
     useEffect(() => {
         document.addEventListener('click', (e) => {
             if (isOpenRef.current.contains(e.target)) {
