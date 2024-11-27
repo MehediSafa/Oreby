@@ -3,7 +3,7 @@ import Container from './Container';
 import { HiMiniBars2 } from "react-icons/hi2";
 import { IoMdSearch, IoMdClose } from "react-icons/io";
 import { FaUser, FaCaretDown, FaShoppingCart } from "react-icons/fa";
-
+import { useDispatch, useSelector } from 'react-redux';
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const isOpenRef = useRef(false)
@@ -12,7 +12,9 @@ const Navbar = () => {
     const isCartOpenRef = useState(false)
     const [isLogin, setIsLogin] = useState(false)
     const isLoginref = useRef(false)
-    
+    let data = useSelector((state) => state.product.cartItem)
+    console.log(data);
+
     useEffect(() => {
         document.addEventListener('click', (e) => {
             if (isOpenRef.current.contains(e.target)) {
@@ -35,7 +37,7 @@ const Navbar = () => {
                 setIsLogin(false)
             }
         });
-    }, [isOpen, isCartOpen,isLogin])
+    }, [isOpen, isCartOpen, isLogin])
 
 
 
@@ -75,61 +77,64 @@ const Navbar = () => {
                     <div className='lg:w-[25%] w-full flex lg:justify-end justify-around items-center gap-3'>
                         <div className='flex relative'>
                             {/* login dropdown  */}
-                           <div  ref={isLoginref} className='flex'>
-                           <FaUser />
-                            <FaCaretDown />
-                           </div>
-                             {/* login area */}
-                           { isLogin && (
-                           
-                            <div className=' absolute top-[23px] left-[-106px] flex flex-col z-50'>
-                            <a href="" className='font-sans font-bold text-[14px] px-[40px] py-[10px] bg-[#262626] text-white hover:text-[#262626] hover:bg-white'>Login</a>
-                            <a href="" className='font-sans font-bold text-[14px]  px-[40px] py-[10px] bg-[#262626] text-white hover:text-[#262626] hover:bg-white'>Sign Up</a>
+                            <div ref={isLoginref} className='flex'>
+                                <FaUser />
+                                <FaCaretDown />
                             </div>
-                           )
+                            {/* login area */}
+                            {isLogin && (
 
-                           }
+                                <div className=' absolute top-[23px] left-[-106px] flex flex-col z-50'>
+                                    <a href="" className='font-sans font-bold text-[14px] px-[40px] py-[10px] bg-[#262626] text-white hover:text-[#262626] hover:bg-white'>Login</a>
+                                    <a href="" className='font-sans font-bold text-[14px]  px-[40px] py-[10px] bg-[#262626] text-white hover:text-[#262626] hover:bg-white'>Sign Up</a>
+                                </div>
+                            )
+
+                            }
                         </div>
 
-                        <div className='cursor-pointer relative' ref={isCartOpenRef}>
-                            {/* shopping cart togglebar */}
-                            <div>
-                                <FaShoppingCart />
-                            </div>
-                            {
-                                isCartOpen && (
-                                    <div className='z-20 absolute top-[32px] right-[-53%]'>
-                                        <div className='w-[300px] h-[100px] bg-[#F5F5F3]'>
-                                            <div className='flex'>
-                                                <div className=' m-2 h-[80px] w-[80px] bg-[#D8D8D8] border-[1px] boder-[#979797]'>
+                        <div className="cursor-pointer relative" ref={isCartOpenRef}>
+                            {/* Red Dot */}
+                            {data.length > 0 &&
+                               <div
+                               className="absolute left-0 top-[-20px] h-[20px] w-[20px] bg-[red] rounded-full z-[10] text-white text-center leading-[20px] text-[12px]"
+                           >
+                               {data.length}
+                              
+                           </div>
 
+                         
+                            }
+                            
+                         
 
-                                                </div>
-                                                <div className='ps-[20px]'>
-                                                    <h2 className='font-sans font-bold text-[14px] pt-[10px] pb-[14px]'>Black Smart Watch</h2>
-                                                    <h3 className='font-sans font-bold text-[14px] '>$44.00</h3>
-                                                </div>
+                            {isCartOpen && (
+                                <div className="z-20 absolute top-[32px] right-[-53%]">
+                                    <div className="w-[300px] h-[100px] bg-[#F5F5F3]">
+                                        <div className="flex">
+                                            <div className="m-2 h-[80px] w-[80px] bg-[#D8D8D8] border-[1px] border-[#979797]"></div>
+                                            <div className="ps-[20px]">
+                                                <h2 className="font-sans font-bold text-[14px] pt-[10px] pb-[14px]">Black Smart Watch</h2>
+                                                <h3 className="font-sans font-bold text-[14px] ">$44.00</h3>
                                             </div>
-                                            <div className='w-[300px] h-[100px] pt-[10px] border-[1px] boder-[#979797]'>
-                                                <div className='m-2'>
-                                                    <span className='font-sans font-normal text-[16px] text-[#767676]'>Subtotal :</span>
-                                                    <span className='font-sans font-normal text-[16px] text-[#262626]'> $44.00</span>
-                                                    <div className='flex gap-2 pt-[15px]'>
-                                                        <button className='' ><span className='px-[30px] py-[16px] border-[1px] border-[#2B2B2B] text-[#262626]hover:text-white hover:bg-[#262626] hover:text-white
-                                                '>View More</span></button>
-                                                        <button className='' ><span className='px-[30px] py-[16px] border-[1px] border-[#2B2B2B] text-[#262626]hover:text-white hover:bg-[#262626] hover:text-white
-                                                '>Chechout</span></button>
-                                                    </div>
+                                        </div>
+                                        <div className="w-[300px] h-[100px] pt-[10px] border-[1px] border-[#979797]">
+                                            <div className="m-2">
+                                                <span className="font-sans font-normal text-[16px] text-[#767676]">Subtotal :</span>
+                                                <span className="font-sans font-normal text-[16px] text-[#262626]"> $44.00</span>
+                                                <div className="flex gap-2 pt-[15px]">
+                                                    <button>
+                                                        <span className="px-[30px] py-[16px] border-[1px] border-[#2B2B2B] text-[#262626] hover:text-white hover:bg-[#262626]">View More</span>
+                                                    </button>
+                                                    <button>
+                                                        <span className="px-[30px] py-[16px] border-[1px] border-[#2B2B2B] text-[#262626] hover:text-white hover:bg-[#262626]">Checkout</span>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
-
-
-
                                     </div>
-                                )
-                            }
-
+                                </div>
+                            )}
                         </div>
 
                     </div>
@@ -137,7 +142,7 @@ const Navbar = () => {
                 </div>
             </Container>
 
-           
+
         </section>
     );
 }
