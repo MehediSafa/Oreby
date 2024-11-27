@@ -1,258 +1,214 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Container from './Container';
+import React, { useEffect, useRef, useState } from "react";
+import Container from "./Container";
 import { HiMiniBars2 } from "react-icons/hi2";
-import { IoMdSearch, IoMdClose } from "react-icons/io";
+import { IoMdSearch } from "react-icons/io";
 import { FaUser, FaCaretDown, FaShoppingCart } from "react-icons/fa";
-import { useDispatch, useSelector } from 'react-redux';
+import { RxCross2 } from "react-icons/rx";
+import { useDispatch, useSelector } from "react-redux";
+import { removeFromCart } from "../slice/productSlice";
+import { Link, useNavigate } from "react-router-dom";
+
 const Navbar = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const isOpenRef = useRef(false)
+  const [isOpen, setIsOpen] = useState(false);  
+  const [isCartOpen, setIsCartOpen] = useState(false); 
+  const [isLogin, setIsLogin] = useState(false); // 
 
-    const [isCartOpen, setIsCartOpen] = useState(false);
-    const isCartOpenRef = useState(false)
-    const [isLogin, setIsLogin] = useState(false)
-    const isLoginref = useRef(false)
-    let data = useSelector((state) => state.product.cartItem)
-    console.log(data);
+  const dropdownRef = useRef(null);
+  const cartRef = useRef(null); 
+  const loginRef = useRef(null); 
 
-    useEffect(() => {
-        document.addEventListener('click', (e) => {
-            if (isOpenRef.current.contains(e.target)) {
-                setIsOpen(!isOpen)
-            }
-            else {
-                setIsOpen(false)
-            }
+  const data = useSelector((state) => state.product.cartItem); 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-            if (isCartOpenRef.current.contains(e.target)) {
-                setIsCartOpen(!isCartOpen)
-            }
-            else {
-                setIsCartOpen(false)
-            }
-            if (isLoginref.current.contains(e.target)) {
-                setIsLogin(!isLogin)
-            }
-            else {
-                setIsLogin(false)
-            }
-        });
-    }, [isOpen, isCartOpen, isLogin])
+  
+  const handleCartPage = () => {
+    navigate("/cart");
+  };
 
+  let handleCheckout = ()=> {
+    navigate('/checkout')
+    setIsCartOpen(false)
+  }
 
+ 
+  const handleClickOutside = (event) => {
+    
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target)
+    ) {
+      setIsOpen(false);
+    }
+    if (cartRef.current && !cartRef.current.contains(event.target)) {
+      setIsCartOpen(false);
+    }
+    if (loginRef.current && !loginRef.current.contains(event.target)) {
+      setIsLogin(false);
+    }
+  };
 
+  useEffect(() => {
+    
+    document.addEventListener("mousedown", handleClickOutside);
 
+    return () => {
+     
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
-    return (
-        <section id='navbar' className='bg-[#F5F5F3] py-[45px] border-t-[1px] border-t-[#979797] border-b-[1px] border-b-[#979797]'>
-            <Container>
-                <div className='flex flex-col lg:flex-row lg:justify-between items-center lg:gap-y-0 gap-y-3'>
-                    <div ref={isOpenRef} className=' cursor-pointer lg:w-[20%] w-full flex items-center  lg:gap-2 gap-4 relative'>
-                        <HiMiniBars2 className=' ps-[2px]' />
+  return (
+    <section id="navbar" className="bg-[#F5F5F3] py-[45px] border-t border-b border-[#979797]">
+      <Container>
+        <div className="flex flex-col lg:flex-row lg:justify-between items-center gap-y-3">
+          {/* Shop by Category */}
+          <div
+            ref={dropdownRef}
+            className="cursor-pointer lg:w-[20%] w-full flex items-center gap-2 relative"
+            onClick={() => setIsOpen((prev) => !prev)}
+          >
+            <HiMiniBars2 className="ps-[2px]" />
+            <p className="font-sans font-normal text-[14px] text-[#262626]">
+              Shop by Category
+            </p>
 
+            {isOpen && (
+              <div className="bg-[#262626] absolute left-0 top-[45px] z-10 w-[200px]">
+                <ul>
+                  {["Accessories", "Electronics", "Clothes", "Bags", "Home Appliances"].map(
+                    (item, index) => (
+                      <li
+                        key={index}
+                        className="w-full h-[50px] flex items-center px-4 font-sans font-normal text-[14px] text-white border-b border-[#2D2D2D] hover:text-white hover:font-bold"
+                      >
+                        {item}
+                      </li>
+                    )
+                  )}
+                </ul>
+              </div>
+            )}
+          </div>
 
+          {/* Search Bar */}
+          <div className="lg:w-[50%] w-full relative">
+            <input
+              type="text"
+              placeholder="Search Products"
+              className="border-none lg:indent-[21px] indent-3 w-full h-[50px]"
+            />
+            <IoMdSearch className="absolute top-[50%] translate-y-[-50%] right-[30px] text-[1.26rem]" />
+          </div>
 
-                        <p className='font-sans font-normal text-[14px] text-[#262626]'>Shop by Category</p>
-                    </div>
-
-                    {isOpen &&
-                        (
-                            <div className=' bg-[#262626] absolute left-[192px] top-[170px] z-10'>
-                                <ul>
-                                    <li className='w-full h-[50px] flex items-center px-4 font-sans font-normal text-[14px] text-white border-b border-[#2D2D2D] hover:text-white hover:font-bold'>Accesories</li>
-                                    <li className='w-full h-[50px] flex items-center px-4 font-sans font-normal text-[14px]  text-white border-b border-[#2D2D2D] hover:text-white hover:font-bold'>Electronics</li>
-                                    <li className='w-full h-[50px] flex items-center px-4 font-sans font-normal text-[14px]  text-white border-b border-[#2D2D2D] hover:text-white hover:font-bold'>Clothes</li>
-                                    <li className='w-full h-[50px] flex items-center px-4 font-sans font-normal text-[14px]  text-white border-b border-[#2D2D2D] hover:text-white hover:font-bold'>Bags</li>
-                                    <li className='w-full h-[50px] flex items-center px-4 font-sans font-normal text-[14px]  text-white border-b border-[#2D2D2D] hover:text-white hover:font-bold'>Home appliances</li>
-                                </ul>
-                            </div>
-                        )
-                    }
-
-                    <div className='lg:w-[50%] w-full relative'>
-                        <input type="text" placeholder='Search Products' className='border-none lg:indent-[21px] indent-3 w-full h-[50px]' />
-                        <IoMdSearch className='absolute top-[50%] translate-y-[-50%] right-[30px] text-[1.26rem]' />
-                    </div>
-
-                    <div className='lg:w-[25%] w-full flex lg:justify-end justify-around items-center gap-3'>
-                        <div className='flex relative'>
-                            {/* login dropdown  */}
-                            <div ref={isLoginref} className='flex'>
-                                <FaUser />
-                                <FaCaretDown />
-                            </div>
-                            {/* login area */}
-                            {isLogin && (
-
-                                <div className=' absolute top-[23px] left-[-106px] flex flex-col z-50'>
-                                    <a href="" className='font-sans font-bold text-[14px] px-[40px] py-[10px] bg-[#262626] text-white hover:text-[#262626] hover:bg-white'>Login</a>
-                                    <a href="" className='font-sans font-bold text-[14px]  px-[40px] py-[10px] bg-[#262626] text-white hover:text-[#262626] hover:bg-white'>Sign Up</a>
-                                </div>
-                            )
-
-                            }
-                        </div>
-
-                        <div className="cursor-pointer relative" ref={isCartOpenRef}>
-                            {/* Red Dot */}
-                            {data.length > 0 &&
-                               <div
-                               className="absolute left-0 top-[-20px] h-[20px] w-[20px] bg-[red] rounded-full z-[10] text-white text-center leading-[20px] text-[12px]"
-                           >
-                               {data.length}
-                              
-                           </div>
-
-                         
-                            }
-                            
-                         
-
-                            {isCartOpen && (
-                                <div className="z-20 absolute top-[32px] right-[-53%]">
-                                    <div className="w-[300px] h-[100px] bg-[#F5F5F3]">
-                                        <div className="flex">
-                                            <div className="m-2 h-[80px] w-[80px] bg-[#D8D8D8] border-[1px] border-[#979797]"></div>
-                                            <div className="ps-[20px]">
-                                                <h2 className="font-sans font-bold text-[14px] pt-[10px] pb-[14px]">Black Smart Watch</h2>
-                                                <h3 className="font-sans font-bold text-[14px] ">$44.00</h3>
-                                            </div>
-                                        </div>
-                                        <div className="w-[300px] h-[100px] pt-[10px] border-[1px] border-[#979797]">
-                                            <div className="m-2">
-                                                <span className="font-sans font-normal text-[16px] text-[#767676]">Subtotal :</span>
-                                                <span className="font-sans font-normal text-[16px] text-[#262626]"> $44.00</span>
-                                                <div className="flex gap-2 pt-[15px]">
-                                                    <button>
-                                                        <span className="px-[30px] py-[16px] border-[1px] border-[#2B2B2B] text-[#262626] hover:text-white hover:bg-[#262626]">View More</span>
-                                                    </button>
-                                                    <button>
-                                                        <span className="px-[30px] py-[16px] border-[1px] border-[#2B2B2B] text-[#262626] hover:text-white hover:bg-[#262626]">Checkout</span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-
-                    </div>
-
+          {/* Login and Cart Section */}
+          <div className="lg:w-[25%] w-full flex lg:justify-end justify-around items-center gap-3">
+            {/* Login Dropdown */}
+            <div ref={loginRef} className="relative">
+              <div
+                className="flex items-center cursor-pointer"
+                onClick={() => setIsLogin((prev) => !prev)}
+              >
+                <FaUser />
+                <FaCaretDown />
+              </div>
+              {isLogin && (
+                <div className="absolute top-[23px] left-0 flex flex-col z-50 bg-white border border-gray-300 rounded-md">
+                  <a
+                    href="#"
+                    className="font-sans font-bold text-[14px] px-[40px] py-[10px] text-[#262626] hover:text-white hover:bg-[#262626]"
+                  >
+                    Login
+                  </a>
+                  <a
+                    href="#"
+                    className="font-sans font-bold text-[14px] px-[40px] py-[10px] text-[#262626] hover:text-white hover:bg-[#262626]"
+                  >
+                    Sign Up
+                  </a>
                 </div>
-            </Container>
+              )}
+            </div>
 
+            {/* Cart Dropdown */}
+            <div ref={cartRef} className="relative">
+              {data.length > 0 && (
+                <div className="absolute top-[-10px] right-[-10px] h-[20px] w-[20px] bg-red-500 rounded-full text-white text-center leading-[20px] text-[12px] z-10">
+                  {data.length}
+                </div>
+              )}
 
-        </section>
-    );
-}
+              <FaShoppingCart
+                className="cursor-pointer text-[1.5rem]"
+                onClick={() => setIsCartOpen((prev) => !prev)}
+              />
+
+              {isCartOpen && (
+                <div className="absolute top-[30px] right-0 w-[300px] bg-white shadow-lg rounded-md z-20">
+                  {data.map((item, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center gap-3 p-4 border-b border-gray-200"
+                    >
+                      <div className="w-[80px] h-[80px] bg-gray-200 border border-gray-300 rounded-md">
+                        <img
+                          src={item.thumbnail}
+                          alt=""
+                          className="w-full h-full object-cover rounded-md"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-bold text-[14px] text-black">
+                          {item.title}
+                        </h3>
+                        <h3 className="font-bold text-[14px] text-black">
+                          ${item.price.toFixed(2)}
+                        </h3>
+                      </div>
+                      <div
+                        className="text-[20px] cursor-pointer text-gray-500 hover:text-black"
+                        onClick={() => dispatch(removeFromCart(i))}
+                      >
+                        <RxCross2 />
+                      </div>
+                    </div>
+                  ))}
+
+                  <div className="bg-white py-4 px-5">
+                    <h5 className="text-[rgba(166,162,162,0.9)]">
+                      Subtotal:{" "}
+                      <span className="text-black font-bold">
+                        $
+                        {data.reduce(
+                          (total, item) => total + item.price,
+                          0
+                        ).toFixed(2)}
+                      </span>
+                    </h5>
+                    <div className="flex mt-4">
+                      <button
+                        className="flex-1 px-[20px] py-[12px] text-[12px] border-2 border-black text-black hover:bg-black hover:text-white duration-300 mr-2"
+                        onClick={handleCartPage}
+                      >
+                        View Cart
+                      </button>
+                     
+                     <button className="flex-1 px-[20px] py-[12px] text-[12px] border-2 border-black text-black hover:bg-black hover:text-white duration-300"
+                     onClick={handleCheckout}
+                     >
+                        Checkout
+                      </button>
+                    
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </Container>
+    </section>
+  );
+};
 
 export default Navbar;
-
-
-
-// import React, { useEffect, useRef, useState } from 'react';
-// import Container from '../Container';
-// import { HiMiniBars2 } from "react-icons/hi2";
-// import { IoMdSearch } from "react-icons/io";
-// import { FaUser, FaCaretDown, FaShoppingCart } from "react-icons/fa";
-
-// const Navbar = () => {
-//     const [isOpen, setIsOpen] = useState(false);
-//     const dropdownRef = useRef(null); // Ref for category dropdown
-//     const [isCartOpen, setIsCartOpen] = useState(false);
-//     const cartRef = useRef(null); // Ref for cart dropdown
-
-//     const handleDropdownClick = (e) => {
-//         e.stopPropagation(); // Prevent event from bubbling up
-//         setIsOpen((prev) => !prev);
-//     };
-
-//     const handleCartClick = (e) => {
-//         e.stopPropagation(); // Prevent event from bubbling up
-//         setIsCartOpen((prev) => !prev);
-//     };
-
-//     const handleClickOutside = (event) => {
-//         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-//             setIsOpen(false);
-//         }
-//         if (cartRef.current && !cartRef.current.contains(event.target)) {
-//             setIsCartOpen(false);
-//         }
-//     };
-
-//     useEffect(() => {
-//         document.addEventListener('mousedown', handleClickOutside);
-//         return () => {
-//             document.removeEventListener('mousedown', handleClickOutside);
-//         };
-//     }, []);
-
-//     return (
-//         <section id='navbar' className='bg-[#F5F5F3] py-[45px] border-t-[1px] border-t-[#979797] border-b-[1px] border-b-[#979797]'>
-//             <Container>
-//                 <div className='flex flex-col lg:flex-row lg:justify-between items-center lg:gap-y-0 gap-y-3'>
-//                     <div ref={dropdownRef} className='cursor-pointer lg:w-[20%] w-full flex items-center lg:gap-2 gap-4 relative' onClick={handleDropdownClick}>
-//                         <HiMiniBars2 className='ps-[2px]' />
-//                         <p className='font-sans font-normal text-[14px] text-[#262626]'>Shop by Category</p>
-//                     </div>
-
-//                     {isOpen && (
-//                         <div className='bg-[#262626] absolute left-[192px] top-[170px] z-20'>
-//                             <ul>
-//                                 <li className='w-full h-[50px] flex items-center px-4 font-sans font-normal text-[14px] text-white border-b border-[#2D2D2D] hover:text-white hover:font-bold'>Accessories</li>
-//                                 <li className='w-full h-[50px] flex items-center px-4 font-sans font-normal text-[14px] text-white border-b border-[#2D2D2D] hover:text-white hover:font-bold'>Electronics</li>
-//                                 <li className='w-full h-[50px] flex items-center px-4 font-sans font-normal text-[14px] text-white border-b border-[#2D2D2D] hover:text-white hover:font-bold'>Clothes</li>
-//                                 <li className='w-full h-[50px] flex items-center px-4 font-sans font-normal text-[14px] text-white border-b border-[#2D2D2D] hover:text-white hover:font-bold'>Bags</li>
-//                                 <li className='w-full h-[50px] flex items-center px-4 font-sans font-normal text-[14px] text-white border-b border-[#2D2D2D] hover:text-white hover:font-bold'>Home Appliances</li>
-//                             </ul>
-//                         </div>
-//                     )}
-
-//                     <div className='lg:w-[50%] w-full relative'>
-//                         <input type="text" placeholder='Search Products' className='border-none lg:indent-[21px] indent-3 w-full h-[50px]' />
-//                         <IoMdSearch className='absolute top-[50%] translate-y-[-50%] right-[30px] text-[1.26rem]' />
-//                     </div>
-
-//                     <div className='lg:w-[25%] w-full flex lg:justify-end justify-around items-center gap-3'>
-//                         <div className='flex'>
-//                             <FaUser />
-//                             <FaCaretDown />
-//                         </div>
-
-//                         <div ref={cartRef} className='relative'>
-//                             <FaShoppingCart className='cursor-pointer' onClick={handleCartClick} />
-//                             {isCartOpen && (
-//                                 <div className='absolute top-[20px] right-0 z-40 bg-[#F5F5F3]'>
-//                                     <div className='w-[300px] h-[100px] bg-[#F5F5F3]'>
-//                                         <div className='flex'>
-//                                             <div className='m-2 h-[80px] w-[80px] bg-[#D8D8D8] border-[1px] border-[#979797]'></div>
-//                                             <div className='ps-[20px]'>
-//                                                 <h2 className='font-sans font-bold text-[14px] pt-[10px] pb-[14px]'>Black Smart Watch</h2>
-//                                                 <h3 className='font-sans font-bold text-[14px] '>$44.00</h3>
-//                                             </div>
-//                                         </div>
-//                                         <div className='w-[300px] h-[100px] pt-[10px] border-[1px] border-[#979797]'>
-//                                             <div className='m-2'>
-//                                                 <span className='font-sans font-normal text-[16px] text-[#767676]'>Subtotal :</span>
-//                                                 <span className='font-sans font-normal text-[16px] text-[#262626]'> $44.00</span>
-//                                                 <div className='flex gap-2 pt-[15px]'>
-//                                                     <button className=''><span className='px-[30px] py-[16px] border-[1px] border-[#2B2B2B] text-[#262626] hover:text-white hover:bg-[#262626]'>View More</span></button>
-//                                                     <button className=''><span className='px-[30px] py-[16px] border-[1px] border-[#2B2B2B] text-[#262626] hover:text-white hover:bg-[#262626]'>Checkout</span></button>
-//                                                 </div>
-//                                             </div>
-//                                         </div>
-//                                     </div>
-//                                 </div>
-//                             )}
-//                         </div>
-//                     </div>
-//                 </div>
-//             </Container>
-//         </section>
-//     );
-// }
-
-// export default Navbar;
-

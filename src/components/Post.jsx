@@ -3,6 +3,8 @@ import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import { FaCodeCompare } from "react-icons/fa6";
 import { ApiData } from './ContextApi';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '../slice/productSlice';
 
 const Post = ({ allPage, activeGrid, categoryFilter, brandFilter, priceShow }) => {
     const { info, loading } = useContext(ApiData);
@@ -19,6 +21,12 @@ const Post = ({ allPage, activeGrid, categoryFilter, brandFilter, priceShow }) =
         setFilterShow(fiveFilter);
         setCount(true);
     };
+
+    let dispatch = useDispatch()
+    let handleCartProduct = (item) => {
+        dispatch(addToCart({...item, qun:1}))
+    }
+    
 
     useEffect(() => {
         let fiveFilter = categoryFilter.slice(0, 5);
@@ -66,7 +74,10 @@ const Post = ({ allPage, activeGrid, categoryFilter, brandFilter, priceShow }) =
                                         <FaCodeCompare className="me-4 text-black" />
                                     </div>
                                     <div className="flex gap-5 lg:pb-3 justify-end items-center">
-                                        <h2 className="text-sm text-gray-600">Add to Cart</h2>
+                                        <h2 className="text-sm text-gray-600 cursor-pointer"
+                                        onClick={()=>handleCartProduct(item)}
+                                        
+                                        >Add to Cart</h2>
                                         <FaShoppingCart className="me-4" />
                                     </div>
                                 </div>

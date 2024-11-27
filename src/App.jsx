@@ -13,6 +13,7 @@ import About from "./components/pages/About"
 import Contact from "./components/pages/Contact"
 import Error from "./components/pages/Error"
 import Cart from "./components/pages/Cart"
+import Checkout from "./components/pages/Checkout"
  
 
 function App() {
@@ -24,8 +25,9 @@ function App() {
     <Route path="/about" element = {<About/>}></Route>
     <Route path="/contact" element = {<Contact/>}></Route>
     <Route path="/contact" element = {<Contact/>}></Route>
-    <Route path="*" element = {<Error/>}></Route>
     <Route path="/cart" element = {<Cart/>}></Route>
+    <Route path="/checkout" element = {<Checkout/>}></Route>
+    <Route path="*" element = {<Error/>}></Route>
      
   </Route>
  ))
