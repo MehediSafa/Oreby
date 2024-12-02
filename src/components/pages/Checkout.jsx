@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Container from '../Container'
 import  { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,6 +16,17 @@ const Checkout = () => {
     acc.totalQuantity += item.qun 
     return acc
   },{totalPrice:0,totalQuantity:0})
+  let [check,setCheck] = useState({
+    bank1:false,
+    bank:false
+  })
+  let hanldleCheck = (e) => {
+    if(e.target.name == 'bank1'){
+        setCheck({bank1:true,bank2:false})
+    }else {
+        setCheck({bank1:false,bank2:true})
+    }
+  }
   return (
     <section>
         <Container>
@@ -98,32 +109,33 @@ const Checkout = () => {
                             </tr>
                         </thead>
                         <tbody>
+  <tr>
+    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+      Subtotal
+    </th>
+    <td className="px-6 py-4">
+      $ {totalPrice.toFixed(2)}
+    </td>
+  </tr>
+  <tr className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
+    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+      Total
+    </th>
+    <td className="px-6 py-4">
+      $ {totalPrice.toFixed(2)}
+    </td>
+  </tr>
+</tbody>
 
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Subtotal
-                                </th>
-                                <tr>
-                                <td className="px-6 py-4">
-                                    {totalPrice} $
-                                </td>
-
-                            </tr>
-                            <tr className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Total
-                                </th>
-                                <td className="px-6 py-4">
-                                    {totalPrice} $
-                                </td>
-
-                            </tr>
-                        </tbody>
                     </table>
                 </div>
             <div className="w-[63%] p-10 border-2 mt-10 ">
                 <div className=" flex gap-2 ">
 
-                    <input  type="checkbox"  className="" id="" placeholder='' />
+                    <input  type="checkbox"  
+                    onChange={hanldleCheck}className="" id="" placeholder=''
+                    name='bank1'
+                    checked={check.bank1} />
                     <h2 className='text-[16px] text-[#262626] font-DMs font-bold'>Bank</h2>
 
                 </div>
@@ -131,7 +143,10 @@ const Checkout = () => {
 
                 <div className=" flex gap-2 mt-5">
 
-                    <input name="bank2" type="checkbox" placeholder=''  />
+                    <input name="bank2" 
+                    onChange={hanldleCheck}
+                    checked={check.bank2}
+                    type="checkbox" placeholder=''  />
                     <h2 className='text-[16px] text-[#262626] font-DMs font-bold'>Bank-2</h2>
 
                 </div>
