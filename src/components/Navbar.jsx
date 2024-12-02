@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Container from "./Container";
 import { HiMiniBars2 } from "react-icons/hi2";
 import { IoMdSearch } from "react-icons/io";
@@ -7,8 +7,12 @@ import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart } from "../slice/productSlice";
 import { Link, useNavigate } from "react-router-dom";
+import { ApiData } from "./ContextApi";
 
 const Navbar = () => {
+  let { info, loading } = useContext(ApiData);
+
+  
   const [isOpen, setIsOpen] = useState(false);  
   const [isCartOpen, setIsCartOpen] = useState(false); 
   const [isLogin, setIsLogin] = useState(false); // 
@@ -20,15 +24,40 @@ const Navbar = () => {
   const data = useSelector((state) => state.product.cartItem); 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  let [search, setSearch] = useState('')
+  let [searchFilter, setSearchFilter] = useState([])
+  let handleChange = (e) => {
+    setSearch(e.target.value);
+  
+    if(e.target.value == ''){
+      setSearchFilter([])
+    } else{
 
+      const searchOneByOne = info.filter((item) =>
+        item.title.toLowerCase().includes(e.target.value.toLowerCase())
+      );
+      setSearchFilter(searchOneByOne); 
+    }
+  
+  };
+  
+  let handleSearchId = (id) => {
+    navigate(`/shop/${id}`);
+    setSearch(""); // Clear search input
+    setSearchFilter([]); // Clear search results
+  };
+  
+  
   
   const handleCartPage = () => {
     navigate("/cart");
+   
   };
 
   let handleCheckout = ()=> {
     navigate('/checkout')
     setIsCartOpen(false)
+    setSearch('')
   }
 
  
@@ -92,13 +121,46 @@ const Navbar = () => {
           </div>
 
           {/* Search Bar */}
-          <div className="lg:w-[50%] w-full relative">
-            <input
-              type="text"
-              placeholder="Search Products"
-              className="border-none lg:indent-[21px] indent-3 w-full h-[50px]"
-            />
-            <IoMdSearch className="absolute top-[50%] translate-y-[-50%] right-[30px] text-[1.26rem]" />
+          <div className="lg:w-[50%] w-full">
+
+          <div className="relative">
+  <input
+    type="text"
+    value={search}
+    placeholder="Search Products"
+    className="border-none lg:indent-[21px] indent-3 w-full h-[50px]"
+    onChange={handleChange}
+  />
+  <IoMdSearch className="absolute top-[50%] translate-y-[-50%] right-[30px] text-[1.26rem]" />
+  
+  {search && (
+    <div className="absolute top-[51px] left-0 w-[500px] bg-white shadow-lg rounded-md z-20 overflow-y-scroll h-[400px]">
+      {searchFilter.length > 0 ? (
+        searchFilter.map((item) => (
+          <div
+            key={item.id} 
+            onClick={() => handleSearchId(item.id)}
+            className="flex items-center gap-3 p-4 border-b border-gray-200 cursor-pointer"
+          >
+            <div className="w-[80px] h-[50px] bg-gray-200 border border-gray-300 rounded-md">
+              <img
+                src={item.thumbnail}
+                alt=""
+                className="w-full h-full object-cover rounded-md"
+              />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-bold text-[14px] text-black">{item.title}</h3>
+            </div>
+          </div>
+        ))
+      ) : (
+        <div className="p-4 text-center text-gray-500">No results found.</div>
+      )}
+    </div>
+  )}
+</div>
+
           </div>
 
           {/* Login and Cart Section */}
